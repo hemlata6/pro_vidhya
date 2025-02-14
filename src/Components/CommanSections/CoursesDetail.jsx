@@ -18,6 +18,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import dayjs from 'dayjs';
 import employeesss from '../../Images/employee.svg'
+import instId from '../../constant/InstituteId';
 
 const zoomInOut = keyframes`
   0% { transform: scale(1); }
@@ -27,7 +28,6 @@ const zoomInOut = keyframes`
 
 const CoursesDetail = ({ courseId }) => {
 
-    const instId = 49;
     const theme = useTheme();
     const isMobile = useMediaQuery("(min-width:600px)");
     const [course, setCourse] = useState(null);
@@ -305,6 +305,11 @@ const CoursesDetail = ({ courseId }) => {
 
     // Extract available watch times
     const updateWatchTimes = () => {
+        const watchTimeList = filteredCourses.map(course =>
+            course.watchTime ? course.watchTime : "Unlimited"
+        );
+        console.log('watchTimeList', watchTimeList);
+        
         const uniqueWatchTimes = [...new Set(filteredCourses.map(course => course.watchTime).filter(w => w !== null))];
         setWatchTimes(uniqueWatchTimes);
     };

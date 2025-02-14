@@ -12,13 +12,15 @@ import IPMATLandingPage from './Pages/IPMMATLandingPage';
 import ExploreMorePage from './Pages/ExploreMorePage';
 import AboutSectionPage from './Pages/AboutSectionPage';
 import CoursePage from './Pages/CoursePage';
+import instId from './constant/InstituteId';
 
 function App() {
 
-  const instId = 49;
   const isMobile = useMediaQuery("(min-width:600px)");
   const [message, setMessage] = useState('Aurous Academy');
 
+  console.log('instId', instId);
+  
   const getInstituteDetail = async () => {
     try {
       let response = await Network.fetchInstituteDetail(instId);

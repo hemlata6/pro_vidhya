@@ -7,10 +7,10 @@ import Endpoints from '../../constant/endpoints';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import instId from '../../constant/InstituteId';
 
 const HomeSection6 = () => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
     const [gallerData, setGallerData] = useState([]);
     const navigate = useNavigate();

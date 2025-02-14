@@ -11,6 +11,7 @@ import { FreeMode, Pagination } from 'swiper/modules';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
 import CloseIcon from '@mui/icons-material/Close';
+import instId from '../../constant/InstituteId';
 
 const IPMATBannerSection2 = () => {
 
@@ -18,7 +19,6 @@ const IPMATBannerSection2 = () => {
     const isIpad = useMediaQuery('(min-width:768px) and (max-width:1024px)');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [banners, setBanners] = useState([]);
-    const instId = 49;
     const [courses, setCourses] = useState([]);
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');

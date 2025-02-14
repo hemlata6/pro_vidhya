@@ -11,6 +11,7 @@ import { FreeMode, Pagination } from 'swiper/modules';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
 import CloseIcon from '@mui/icons-material/Close';
+import instId from '../../constant/InstituteId';
 
 const CourseSection2 = () => {
 
@@ -18,7 +19,6 @@ const CourseSection2 = () => {
     const isIpad = useMediaQuery('(min-width:768px) and (max-width:1024px)');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [banners, setBanners] = useState([]);
-    const instId = 49;
     const [courses, setCourses] = useState([]);
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
@@ -33,7 +33,7 @@ const CourseSection2 = () => {
             const response = await Network.fetchDomain(auth);
             let filterCA = response?.domains?.filter((item) => item?.name === "CA");
 
-            if (filterCA.length > 0) {
+            if (filterCA?.length > 0) {
                 setDomainData(filterCA[0].child);
             }
         } catch (error) {

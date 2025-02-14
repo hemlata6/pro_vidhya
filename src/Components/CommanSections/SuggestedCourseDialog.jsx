@@ -10,11 +10,11 @@ import moment from 'moment';
 import Fab from '@mui/material/Fab';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CancelIcon from '@mui/icons-material/Cancel';
+import instId from '../../constant/InstituteId';
 
 const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) => {
 
     // const courseId = 527;
-    const instId = 49;
     const theme = useTheme();
     const isMobile = useMediaQuery("(min-width:600px)");
     const [course, setCourse] = useState(null);

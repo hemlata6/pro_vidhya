@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Box, useMediaQuery } from '@mui/material';
 import Endpoints from '../../constant/endpoints';
 import Network from '../../Netwrok';
+import instId from '../../constant/InstituteId';
 
 const CustomCarousel = () => {
 
     const isMobile = useMediaQuery("(min-width:600px)");
     const [currentIndex, setCurrentIndex] = useState(0);
     const [banners, setBanners] = useState([]);
-    const instId = 49;
 
     const getBanners = async () => {
         try {

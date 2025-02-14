@@ -20,11 +20,11 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import DomainMenu from './CustomMenu';
 import { styled } from '@mui/material/styles';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import instId from '../../constant/InstituteId';
 
 
 const NavBarTwo = ({ downloadAppRef }) => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
     const navigate = useNavigate();
     const [selectedCourse, setSelectedCourse] = useState('Home');
@@ -211,6 +211,9 @@ const NavBarTwo = ({ downloadAppRef }) => {
     const handleNavigateAboutUs = () => {
         navigate('/about');
     };
+
+    console.log('domainData', domainData, courses);
+    
 
     const DrawerList = (
         <Box sx={{ width: 320 }} role="presentation">

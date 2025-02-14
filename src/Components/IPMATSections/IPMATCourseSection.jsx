@@ -8,6 +8,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
+import instId from '../../constant/InstituteId';
 
 const TabPanel = ({ children, value, index, ...other }) => {
     return (
@@ -37,7 +38,6 @@ const IPMATCourseSection = () => {
     const theme = useTheme();
     const [value, setValue] = useState(0);
     const [courses, setCourses] = useState([]);
-    const instId = 49;
 
     // const handleChange = (event, newValue) => {
     //     setValue(newValue);

@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid2';
 
 const AboutSection1 = () => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
 
     return (

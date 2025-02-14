@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import dayjs from 'dayjs';
+import instId from '../../constant/InstituteId';
 
 const TabPanel = ({ children, value, index, ...other }) => {
     return (
@@ -33,7 +34,6 @@ function a11yProps(index) {
 
 const CAEmployeeSection = () => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
     const [employees, setEmployees] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0); // State to track the active index

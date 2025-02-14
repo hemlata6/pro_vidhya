@@ -9,6 +9,9 @@ const DomainMenu = ({ domainData, courses }) => {
     setSelectedDomain(domain);
   };
 
+  console.log('courses', courses);
+  
+
   const getCoursesForDomain = (domainId) => {
     // Collect course titles for the main domain and its children
     const matchedCourses = courses.filter((course) =>

@@ -4,9 +4,9 @@ import Grid from '@mui/material/Grid2';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
 import { useLocation } from 'react-router-dom';
+import instId from '../../constant/InstituteId';
 const ExploreMoreSection1 = () => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);

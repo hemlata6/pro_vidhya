@@ -3,13 +3,13 @@ import { Box, useMediaQuery } from '@mui/material';
 import Endpoints from '../../constant/endpoints';
 import Network from '../../Netwrok';
 import Grid from '@mui/material/Grid2';
+import instId from '../../constant/InstituteId';
 
 const CABannerSection = () => {
 
     const isMobile = useMediaQuery("(min-width:600px)");
     const [currentIndex, setCurrentIndex] = useState(0);
     const [banners, setBanners] = useState([]);
-    const instId = 49;
 
     const getBanners = async () => {
         try {

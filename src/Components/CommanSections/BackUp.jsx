@@ -24,10 +24,10 @@ import Network from '../../Netwrok';
 import Vector from '../../Images/Vector.svg'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import instId from '../../constant/InstituteId';
 
 const NavBarTwo = () => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
     const navigate = useNavigate();
     const [selectedCourse, setSelectedCourse] = useState('Home');

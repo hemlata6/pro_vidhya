@@ -5,7 +5,6 @@ import CustomCarousel from '../CommanSections/CustomCarousel';
 
 const HomeSection1 = () => {
 
-  const instId = 49;
   const isMobile = useMediaQuery("(min-width:600px)");
 
   return (

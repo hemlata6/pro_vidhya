@@ -8,7 +8,6 @@ import image4 from '../../Images/IPM.jpg'
 
 const HomeSection7 = () => {
 
-    const instId = 49;
     const isMobile = useMediaQuery("(min-width:600px)");
 
     const domains = [
