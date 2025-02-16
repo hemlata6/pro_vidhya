@@ -4,39 +4,14 @@ import Endpoints from '../../constant/endpoints';
 import Network from '../../Netwrok';
 import instId from '../../constant/InstituteId';
 
-const CustomCarousel = () => {
+const CustomCarousel = ({banners, setBanners}) => {
 
     const isMobile = useMediaQuery("(min-width:600px)");
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [banners, setBanners] = useState([]);
+   
 
-    const getBanners = async () => {
-        try {
-            const response = await Network.fetchBannerss(instId);
-            const fetchedBanners = response.banners || [];
-            let reusltBanner = [];
-            fetchedBanners.forEach((item) => {
-                // console.log('item', item)
-                if (item?.group === 'Website Top Banner') {
-                    reusltBanner.push(item);
-                };
-            })
-            // setBanners(reusltBanner || []);
-            if (reusltBanner.length > 0) {
-                const extendedBanners = [...reusltBanner, reusltBanner[0]];
-                setBanners(extendedBanners);
-            } else {
-                setBanners([]);
-            }
-        } catch (error) {
-            console.error('Failed to fetch banners:', error);
-            setBanners([]);
-        }
-    };
-
-    useEffect(() => {
-        getBanners();
-    }, []);
+    console.log('banners', banners);
+    
 
     useEffect(() => {
         if (banners.length === 0) return;
@@ -71,7 +46,7 @@ const CustomCarousel = () => {
                                 display: 'flex',
                                 transition: 'transform 0.5s ease',
                                 transform: `translateX(${-currentIndex * 100}%)`,
-                                width: `60%`,
+                                width: `100%`,
                             }}
                         >
                             {banners.map((img, index) => {

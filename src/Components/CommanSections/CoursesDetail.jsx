@@ -32,10 +32,6 @@ const CoursesDetail = ({ courseId }) => {
     const isMobile = useMediaQuery("(min-width:600px)");
     const [course, setCourse] = useState(null);
     const [selectedAccess, setSelectedAccess] = useState([]);
-    // const [selectedVariant, setSelectedVariant] = useState("");
-    // const [selectedValidityType, setSelectedValidityType] = useState("");
-    // const [selectedDuration, setSelectedDuration] = useState(null);
-    // const [selectedWatchTime, setSelectedWatchTime] = useState(null);
     const [coursePricing, setCoursePricing] = useState([]);
     const [coursePublic, setCoursesPublic] = useState([]);
     const [publicCourses, setPublicCourses] = useState([]);
@@ -47,6 +43,31 @@ const CoursesDetail = ({ courseId }) => {
     const [employees, setEmployees] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
     const [employee, setEmployee] = useState([]);
+    const [selectedLearningMode, setSelectedLearningMode] = useState("");
+    const [filteredCourses, setFilteredCourses] = useState([]);
+    const [selectedVariant, setSelectedVariant] = useState("");
+    const [availableVariants, setAvailableVariants] = useState([]);
+    const [validityTypes, setValidityTypes] = useState([]);
+    const [selectedValidityType, setSelectedValidityType] = useState("");
+    const [durations, setDurations] = useState([]);
+    const [expiries, setExpiries] = useState([]);
+    const [selectedDuration, setSelectedDuration] = useState(null);
+    const [selectedExpiry, setSelectedExpiry] = useState(null);
+    const [watchTimes, setWatchTimes] = useState([]);
+    const [selectedWatchTime, setSelectedWatchTime] = useState(null);
+    const [finalCoursePricing, setFinalCoursePricing] = useState([]);
+    const [finalAmountsss, setFinalAmountsss] = useState(0);
+    const [finalWatchTime, setFinalWatchTime] = useState([]);
+
+
+    const discount = finalWatchTime?.length > 0 ? finalWatchTime[0]?.discount : filteredCourses[0]?.discount ?? 0;
+    const taxLab = course?.taxLab ?? 0;
+    const price = finalWatchTime?.length > 0 ? finalWatchTime[0]?.price : filteredCourses[0]?.price ?? 0;
+
+    const discountedAmount = (price * discount) / 100;
+    const finalPrice = price - discountedAmount;
+    const taxLabAmount = (finalPrice * taxLab) / 100;
+    const finalAmount = finalPrice + taxLabAmount;
 
     // console.log('course', course)
 
@@ -94,29 +115,9 @@ const CoursesDetail = ({ courseId }) => {
         ],
     };
 
-    const getEmployee = async () => {
-        try {
-            const response = await Network.fetchEmployee(instId);
-            setEmployee(response?.employees);
-
-        } catch (error) {
-            console.error("Error fetching employees:", error);
-        }
-    };
     useEffect(() => {
         getEmployee();
     }, []);
-
-    const handleOpenSuggestedCourseDialog = (id) => {
-        setSuggestedCourseDialog(true);
-        setSuggestedCourseId(id)
-    };
-
-    const handleCloseSuggestedCourseDialog = () => {
-        setSuggestedCourseDialog(false);
-    };
-
-    // console.log('suggestedLength', tagName, suggestedLength);
 
     useEffect(() => {
         // ✅ Filter only active courses
@@ -149,7 +150,7 @@ const CoursesDetail = ({ courseId }) => {
 
         const matchedTag = findTagById(tagNames, coursePublic?.setting?.checkoutTag);
         setTagName(matchedTag);
-        setSuggestedLength(filteredCourses);
+        setSuggestedLength(finalWatchTime?.length > 0 ? finalWatchTime : filteredCourses);
 
         if (activeCourses.length > 0) {
             const selectedCourse = activeCourses.find(item => courseId === item.id);
@@ -159,14 +160,67 @@ const CoursesDetail = ({ courseId }) => {
         }
     }, [publicCourses, courseId, coursePublic]);
 
-    const [finalCoursePricing, setFinalCoursePricing] = useState([]);
-    const [finalAmountsss, setFinalAmountsss] = useState(0); // Store the final amount from child
-
     useEffect(() => {
         if (course) {
             setFinalCoursePricing(course?.coursePricing);
         };
     }, [])
+
+    useEffect(() => {
+        getCourseById();
+    }, [courseId]);
+
+    useEffect(() => {
+        getAllCourses();
+    }, [coursePublic]);
+
+    useEffect(() => {
+        getAllCoursesPublic();
+    }, []);
+
+    useEffect(() => {
+        updateSelectedWatchTime(filteredCourses);
+       
+        
+    }, [selectedWatchTime, filteredCourses])
+
+    console.log('filteredCourses', filteredCourses);
+
+    useEffect(() => {
+        const newFilteredCourses = filterCoursesByLearningMode();
+        setFilteredCourses(newFilteredCourses);
+    }, [selectedLearningMode]);
+
+    useEffect(() => {
+        updateValidityTypes();
+    }, [filteredCourses]);
+
+    useEffect(() => {
+        setFilteredCourses(filteredCourses.filter(course => course.validityType === selectedValidityType));
+        updateExpiriesAndDurations();
+    }, [selectedValidityType]);
+
+
+
+    const getEmployee = async () => {
+        try {
+            const response = await Network.fetchEmployee(instId);
+            setEmployee(response?.employees);
+
+        } catch (error) {
+            console.error("Error fetching employees:", error);
+        }
+    };
+
+    const handleOpenSuggestedCourseDialog = (id) => {
+        setSuggestedCourseDialog(true);
+        setSuggestedCourseId(id)
+    };
+
+    const handleCloseSuggestedCourseDialog = () => {
+        setSuggestedCourseDialog(false);
+    };
+
 
     const handleFinalAmountUpdate = (amount) => {
         setFinalAmountsss(amount); // Update the parent state with child's final amount
@@ -212,17 +266,6 @@ const CoursesDetail = ({ courseId }) => {
         }, Infinity);
     };
 
-    useEffect(() => {
-        getCourseById();
-    }, [courseId]);
-
-    useEffect(() => {
-        getAllCourses();
-    }, [coursePublic]);
-
-    useEffect(() => {
-        getAllCoursesPublic();
-    }, []);
 
     //Combination New Code 
 
@@ -245,26 +288,10 @@ const CoursesDetail = ({ courseId }) => {
         return Array.from(modeSet);
     };
 
-    const [selectedLearningMode, setSelectedLearningMode] = useState("");
-    const [filteredCourses, setFilteredCourses] = useState([]);
-    const [selectedVariant, setSelectedVariant] = useState("");
-    const [availableVariants, setAvailableVariants] = useState([]);
-    const [validityTypes, setValidityTypes] = useState([]);
-    const [selectedValidityType, setSelectedValidityType] = useState("");
-    const [durations, setDurations] = useState([]);
-    const [expiries, setExpiries] = useState([]);
-    const [selectedDuration, setSelectedDuration] = useState(null);
-    const [selectedExpiry, setSelectedExpiry] = useState(null);
-    const [watchTimes, setWatchTimes] = useState([]);
-    const [selectedWatchTime, setSelectedWatchTime] = useState(null);
-
 
     const filterCoursesByLearningMode = () => {
         return coursePricing.filter(course => {
-            // Extract selected values as an array
             const selectedModes = selectedLearningMode.split(" + ");
-
-            // Check if the course matches selected modes exactly
             const matchesSelection = (
                 (selectedModes.includes("Live Access") ? course.liveAccess === true : course.liveAccess === null) &&
                 (selectedModes.includes("Recorded") ? course.onlineContentAccess === true : course.onlineContentAccess === null) &&
@@ -280,13 +307,11 @@ const CoursesDetail = ({ courseId }) => {
         const uniqueValidityTypes = [...new Set(filteredCourses.map(course => course.validityType))];
         setValidityTypes(uniqueValidityTypes);
 
-        // Auto-select if only one validity type exists
         if (uniqueValidityTypes.length === 1) {
             setSelectedValidityType(uniqueValidityTypes[0]);
         }
     };
 
-    // Extract expiry dates & durations
     const updateExpiriesAndDurations = () => {
         if (selectedValidityType === "expiry") {
             const uniqueExpiries = [...new Set(filteredCourses.map(course => course.expiry).filter(e => e !== null))];
@@ -303,18 +328,21 @@ const CoursesDetail = ({ courseId }) => {
         }
     };
 
-    // Extract available watch times
     const updateWatchTimes = () => {
+        // const watchTimeList = filteredCourses.map(course =>
+        //     course.watchTime ? course.watchTime : "Unlimited"
+        // );
+
         const watchTimeList = filteredCourses.map(course =>
             course.watchTime ? course.watchTime : "Unlimited"
         );
+        setWatchTimes([...new Set(watchTimeList)]);
         console.log('watchTimeList', watchTimeList);
-        
-        const uniqueWatchTimes = [...new Set(filteredCourses.map(course => course.watchTime).filter(w => w !== null))];
-        setWatchTimes(uniqueWatchTimes);
+
+        // const uniqueWatchTimes = [...new Set(filteredCourses.map(course => course.watchTime).filter(w => w !== null))];
+        // setWatchTimes(uniqueWatchTimes);
     };
 
-    // Format milliseconds into "years, months, days"
     const formatMilliseconds = (milliseconds) => {
         const totalDays = milliseconds / (1000 * 60 * 60 * 24);
         const years = Math.floor(totalDays / 365);
@@ -328,69 +356,62 @@ const CoursesDetail = ({ courseId }) => {
         ].filter(Boolean).join(" ");
     };
 
-    // Handle changes in learning mode
     const handleLearningModeChange = (event) => {
         setSelectedLearningMode(event.target.value);
     };
 
-    // Handle changes in validity type selection
+    const handleVariantChange = (event) => {
+        setSelectedVariant(event.target.value);
+    };
+
     const handleValidityTypeChange = (event) => {
         setSelectedValidityType(event.target.value);
     };
 
-    // Handle changes in expiry selection
     const handleExpiryChange = (event) => {
         setSelectedExpiry(event.target.value);
         setFilteredCourses(filteredCourses.filter(course => course.expiry === event.target.value));
     };
 
-    // Handle changes in duration selection
     const handleDurationChange = (event) => {
-        setSelectedDuration(event.target.value);
+        setSelectedDuration(event.target.value !== "Unlimited" ? Number(event.target.value) : event.target.value);
         setFilteredCourses(filteredCourses.filter(course => course.duration === event.target.value));
         updateWatchTimes();
     };
 
-    // Handle changes in watch time selection
     const handleWatchTimeChange = (event) => {
         setSelectedWatchTime(event.target.value);
-        setFilteredCourses(filteredCourses.filter(course => course.watchTime === event.target.value));
+        
+        // updateWatchTimes();
+        // setFilteredCourses(filteredCourses.filter(course => course.watchTime === event.target.value));
     };
 
-    // Update filtered courses when Learning Mode changes
-    useEffect(() => {
-        const newFilteredCourses = filterCoursesByLearningMode();
-        setFilteredCourses(newFilteredCourses);
-    }, [selectedLearningMode]);
+    const updateSelectedWatchTime = (filteredCourses) => {
+        console.log('selectedWatchTime=====', selectedWatchTime, filteredCourses);
+        
+        if (selectedWatchTime !== null && selectedWatchTime !== undefined) {
 
-    // Update validity types when filtered courses change
-    useEffect(() => {
-        updateValidityTypes();
-    }, [filteredCourses]);
+            const updateWatchTime = filteredCourses.filter(course =>
+                selectedWatchTime === "Unlimited"
+                    ? course.watchTime === null || course.watchTime === undefined || course.watchTime === ""
+                    : Number(course.watchTime) === Number(selectedWatchTime)
+            );
+            console.log('updateWatchTime', updateWatchTime);
+            setFinalWatchTime(updateWatchTime)
+            // setFilteredCourses(updateWatchTime);
+        }
+    }
 
-    // Update filtered courses when Validity Type changes
-    useEffect(() => {
-        setFilteredCourses(filteredCourses.filter(course => course.validityType === selectedValidityType));
-        updateExpiriesAndDurations();
-    }, [selectedValidityType]);
+    // console.log('finalAmount', discount, taxLab, price, discountedAmount, finalPrice, taxLabAmount, finalAmount)
+    // console.log('filteredCourses', filteredCourses)
+    // console.log('employee', employee, employeesss);
 
-    const discount = filteredCourses[0]?.discount ?? 0;  // Ensure discount is a number
-    const taxLab = course?.taxLab ?? 0;  // Ensure taxLab is a number
-    const price = filteredCourses[0]?.price ?? 0;  // Ensure price is a number
-
-    const discountedAmount = (price * discount) / 100;  // Proper calculation
-    const finalPrice = price - discountedAmount;
-    const taxLabAmount = (finalPrice * taxLab) / 100;
-    const finalAmount = finalPrice + taxLabAmount;
-
-    console.log('finalAmount', discount, taxLab, price, discountedAmount, finalPrice, taxLabAmount, finalAmount)
-    console.log('filteredCourses', filteredCourses)
 
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '3rem' : '1rem' }}>
             <Grid container spacing={2}>
                 <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 4 }}>
-                    <Stack direction={'column'} spacing={1}>
+                    <Stack direction={'column'} spacing={1} sx={{ marginRight: "25px" }}>
                         <Carousel showThumbs={false} className="carousel-box">
                             <div>
                                 <img src={Endpoints?.mediaBaseUrl + "/" + course?.logo} style={{ borderRadius: "8px", width: '95%' }} />
@@ -449,7 +470,7 @@ const CoursesDetail = ({ courseId }) => {
                     </Stack>
                 </Grid>
                 <Grid item size={{ xs: 12, sm: 8, md: 8, lg: 8 }}>
-                    <Box sx={{ flexGrow: 1 }}>
+                    <Box sx={{ flexGrow: 1, marginLeft: "25px" }}>
                         <Grid container spacing={2}>
                             <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
                                 <Stack direction={'column'} spacing={2}>
@@ -467,189 +488,199 @@ const CoursesDetail = ({ courseId }) => {
                                     >
                                         {course?.shortDescription === null ? 'Short Description' : course?.shortDescription}
                                     </Typography>
-                                    <Stack direction={'row'} spacing={2} width={'100%'}>
-                                        <div
-                                            style={{
-                                                width: '100%'
-                                            }}
-                                        >
-                                            <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Lecture Mode</InputLabel>
-                                                <Select
-                                                    // multiple
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    value={selectedLearningMode}
-                                                    onChange={handleLearningModeChange}
-                                                    // renderValue={(selected) => selected.join(", ")}
-                                                    sx={{
-                                                        width: '100%',
-                                                        maxWidth: '430px'
-                                                    }}
-                                                >
-                                                    {getUniqueLearningModes().map((mode, index) => (
-                                                        <MenuItem key={index} value={mode}>
-                                                            {mode}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
-                                        </div>
-                                        {availableVariants.length > 0 && (
+                                    <Grid container sx={{ mt: 2 }}>
+                                        <Grid item size={{ xs: 6, sm: 6, md: 6, lg: 6 }} sx={{ paddingRight: "10px" }}>
                                             <div
                                                 style={{
                                                     width: '100%'
                                                 }}
                                             >
-                                                <FormControl fullWidth>
-                                                    <InputLabel id="demo-simple-select-label">Select Variant</InputLabel>
+                                                <FormControl fullWidth sx={{ mb: 2 }}>
+                                                    <InputLabel id="demo-simple-select-label">Lecture Mode</InputLabel>
                                                     <Select
                                                         // multiple
+                                                        label="Lecture Mode"
                                                         fullWidth
                                                         variant="outlined"
-                                                        value={selectedVariant}
-                                                        onChange={handleVariantChange}
-                                                        // renderValue={(selected) => selected.join(", ")} // Directly show selected values
+                                                        value={selectedLearningMode}
+                                                        onChange={handleLearningModeChange}
+                                                        // renderValue={(selected) => selected.join(", ")}
                                                         sx={{
                                                             width: '100%',
                                                             maxWidth: '430px'
                                                         }}
                                                     >
-                                                        {availableVariants.map((variant, index) => (
-                                                            <MenuItem key={index} value={variant}>
-                                                                {variant}
+                                                        {getUniqueLearningModes().map((mode, index) => (
+                                                            <MenuItem key={index} value={mode}>
+                                                                {mode}
                                                             </MenuItem>
                                                         ))}
                                                     </Select>
                                                 </FormControl>
                                             </div>
-                                        )}
-                                    </Stack>
-                                    <Stack direction={'row'} spacing={2} width={'100%'}>
-                                        {
-                                            validityTypes.length > 1 && (
+                                            {
+                                                validityTypes.length > 1 && (
+                                                    <div
+                                                        style={{
+                                                            width: '100%'
+                                                        }}
+                                                    >
+                                                        <FormControl fullWidth sx={{ mb: 2 }}>
+                                                            <InputLabel id="demo-simple-select-label">Select Validity</InputLabel>
+                                                            <Select
+                                                                // multiple
+                                                                label="Select Validity"
+                                                                fullWidth
+                                                                variant="outlined"
+                                                                value={selectedValidityType}
+                                                                onChange={handleValidityTypeChange}
+                                                                // renderValue={(selected) => selected.join(", ")} // Directly show selected values
+                                                                sx={{
+                                                                    width: '100%',
+                                                                    maxWidth: '430px'
+                                                                }}
+                                                            >
+                                                                {validityTypes.map((type, index) => (
+                                                                    <MenuItem key={index} value={type}>
+                                                                        {type}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        </FormControl>
+                                                    </div>
+                                                )}
+                                            {selectedValidityType === "validity" && durations.length > 0 && (
                                                 <div
                                                     style={{
                                                         width: '100%'
                                                     }}
                                                 >
-                                                    <FormControl fullWidth>
+                                                    <FormControl fullWidth sx={{ mb: 2 }}>
                                                         <InputLabel id="demo-simple-select-label">Select Validity</InputLabel>
                                                         <Select
                                                             // multiple
+                                                            label="Select Validity"
                                                             fullWidth
                                                             variant="outlined"
-                                                            value={selectedValidityType}
-                                                            onChange={handleValidityTypeChange}
+                                                            value={selectedDuration}
+                                                            onChange={handleDurationChange}
                                                             // renderValue={(selected) => selected.join(", ")} // Directly show selected values
                                                             sx={{
                                                                 width: '100%',
                                                                 maxWidth: '430px'
                                                             }}
                                                         >
-                                                            {validityTypes.map((type, index) => (
-                                                                <MenuItem key={index} value={type}>
-                                                                    {type}
+                                                            {durations.map((duration, index) => (
+                                                                <MenuItem key={index} value={duration}>
+                                                                    <ListItemText primary={formatMilliseconds(duration)} />
                                                                 </MenuItem>
                                                             ))}
                                                         </Select>
                                                     </FormControl>
                                                 </div>
                                             )}
-                                        {/* {
-                                            selectedValidityType && selectedValidityType !== "lifetime" && getDurationList().length > 0 && ( */}
-                                        {selectedValidityType === "expiry" && expiries.length > 0 && (
-                                            <div
-                                                style={{
-                                                    width: '100%'
-                                                }}
-                                            >
-                                                <FormControl fullWidth>
-                                                    <InputLabel id="demo-simple-select-label">Select Expiry Date</InputLabel>
-                                                    <Select
-                                                        // multiple
-                                                        fullWidth
-                                                        variant="outlined"
-                                                        value={selectedExpiry}
-                                                        onChange={handleExpiryChange}
-                                                        // renderValue={(selected) => selected.join(", ")} // Directly show selected values
-                                                        sx={{
-                                                            width: '100%',
-                                                            maxWidth: '430px'
-                                                        }}
-                                                    >
-                                                        {expiries.map((expiry, index) => (
-                                                            <MenuItem key={index} value={expiry}>
-                                                                <ListItemText primary={moment(expiry).format("D MMMM YYYY")} />
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
-                                            </div>
-                                        )}
-                                    </Stack>
-                                    <Stack direction={'row'} spacing={2} width={'100%'}>
-                                        {selectedValidityType === "validity" && durations.length > 0 && (
-                                            <div
-                                                style={{
-                                                    width: '100%'
-                                                }}
-                                            >
-                                                <FormControl fullWidth>
-                                                    <InputLabel id="demo-simple-select-label">Select Validity</InputLabel>
-                                                    <Select
-                                                        // multiple
-                                                        fullWidth
-                                                        variant="outlined"
-                                                        value={selectedDuration}
-                                                        onChange={handleDurationChange}
-                                                        // renderValue={(selected) => selected.join(", ")} // Directly show selected values
-                                                        sx={{
-                                                            width: '100%',
-                                                            maxWidth: '430px'
-                                                        }}
-                                                    >
-                                                        {durations.map((duration, index) => (
-                                                            <MenuItem key={index} value={duration}>
-                                                                <ListItemText primary={formatMilliseconds(duration)} />
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
-                                            </div>
-                                        )}
-                                        {
-                                            watchTimes.length > 0 && (
+                                        </Grid>
+                                        <Grid item size={{ xs: 6, sm: 6, md: 6, lg: 6 }} sx={{ paddingLeft: "10px" }}>
+                                            {availableVariants.length > 0 && (
                                                 <div
                                                     style={{
-                                                        width: '100%',
-                                                        maxWidth: '430px'
+                                                        width: '100%'
                                                     }}
                                                 >
-                                                    <FormControl fullWidth>
-                                                        <InputLabel id="demo-simple-select-label">Select View</InputLabel>
+                                                    <FormControl fullWidth sx={{ mb: 2 }}>
+                                                        <InputLabel id="demo-simple-select-label">Select Variant</InputLabel>
                                                         <Select
                                                             // multiple
+                                                            label="Select Variant"
                                                             fullWidth
                                                             variant="outlined"
-                                                            value={selectedWatchTime}
-                                                            onChange={handleWatchTimeChange}
+                                                            value={selectedVariant}
+                                                            onChange={handleVariantChange}
                                                             // renderValue={(selected) => selected.join(", ")} // Directly show selected values
                                                             sx={{
                                                                 width: '100%',
-                                                                // maxWidth: '300px'
+                                                                maxWidth: '430px'
                                                             }}
                                                         >
-                                                            {watchTimes.map((watchTime, index) => (
-                                                                <MenuItem key={index} value={watchTime}>
-                                                                    {watchTime}x
+                                                            {availableVariants.map((variant, index) => (
+                                                                <MenuItem key={index} value={variant}>
+                                                                    {variant}
                                                                 </MenuItem>
                                                             ))}
                                                         </Select>
                                                     </FormControl>
                                                 </div>
                                             )}
-                                    </Stack>
+                                            {selectedValidityType === "expiry" && expiries.length > 0 && (
+                                                <div
+                                                    style={{
+                                                        width: '100%'
+                                                    }}
+                                                >
+                                                    <FormControl fullWidth sx={{ mb: 2 }}>
+                                                        <InputLabel id="demo-simple-select-label">Select Expiry Date</InputLabel>
+                                                        <Select
+                                                            // multiple
+                                                            label="Select Expiry Date"
+                                                            fullWidth
+                                                            variant="outlined"
+                                                            value={selectedExpiry}
+                                                            onChange={handleExpiryChange}
+                                                            // renderValue={(selected) => selected.join(", ")} // Directly show selected values
+                                                            sx={{
+                                                                width: '100%',
+                                                                maxWidth: '430px'
+                                                            }}
+                                                        >
+                                                            {expiries.map((expiry, index) => (
+                                                                <MenuItem key={index} value={expiry}>
+                                                                    <ListItemText primary={moment(expiry).format("D MMMM YYYY")} />
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    </FormControl>
+                                                </div>
+                                            )}
+                                            {
+                                                watchTimes.length > 0 && (
+                                                    <div
+                                                        style={{
+                                                            width: '100%',
+                                                            maxWidth: '430px'
+                                                        }}
+                                                    >
+                                                        <FormControl fullWidth sx={{ mb: 2 }}>
+                                                            <InputLabel id="demo-simple-select-label">Select View</InputLabel>
+                                                            <Select
+                                                                // multiple
+                                                                label="Select View"
+                                                                fullWidth
+                                                                variant="outlined"
+                                                                value={selectedWatchTime}
+                                                                onChange={handleWatchTimeChange}
+                                                                // renderValue={(selected) => selected.join(", ")} // Directly show selected values
+                                                                sx={{
+                                                                    width: '100%',
+                                                                    // maxWidth: '300px'
+                                                                }}
+                                                            >
+                                                                {watchTimes?.map((watchTime) => {
+                                                                    return <MenuItem key={watchTime} value={watchTime ? watchTime : "Unlimited"}>
+                                                                        <ListItemText primary={watchTime !== "Unlimited" ? `${watchTime}x` : watchTime} />
+                                                                    </MenuItem>
+                                                                })}
+                                                                {/* {watchTimes.map((watchTime, index) => (
+                                                                    <MenuItem key={index} value={watchTime}>
+                                                                        {watchTime}x
+                                                                    </MenuItem>
+                                                                ))} */}
+                                                            </Select>
+                                                        </FormControl>
+                                                    </div>
+                                                )}
+                                        </Grid>
+                                    </Grid>
+
                                 </Stack>
                             </Grid>
                             <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }} width={'100%'}>
@@ -669,6 +700,8 @@ const CoursesDetail = ({ courseId }) => {
                                         <Stack direction={isMobile ? 'row' : 'column'} spacing={2} width={'100%'}>
                                             {
                                                 suggestedLength.map((item, i) => {
+                                                    console.log('item', item);
+                                                    
                                                     return (
                                                         <Stack key={i} direction={isMobile ? 'row' : 'column'} spacing={2} display={'flex'}>
                                                             <Card sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -714,13 +747,15 @@ const CoursesDetail = ({ courseId }) => {
                         </Grid>
                     </Box>
                 </Grid>
+            </Grid>
+            <Grid container spacing={2}>
                 <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
                     sx={{
                         borderRadius: '10px',
                         background: '#fff',
                     }}
                 >
-                    <Stack direction={'column'} spacing={2}>
+                    <Stack direction={'column'} spacing={2} sx={{ mt: 3 }}>
                         <Typography
                             fontSize={'18px'}
                             fontWeight={'600'}
@@ -743,10 +778,11 @@ const CoursesDetail = ({ courseId }) => {
                 >
                     <Stack direction={'row'} spacing={2}>
                         <Typography
+                            sx={{ mb: 3 }}
                             fontSize={'18px'}
                             fontWeight={'600'}
                             textAlign={isMobile ? 'start' : 'center'}
-                            py={[0, 2]}
+                            py={[0, 3]}
                         >
                             Faculty Profile
                         </Typography>

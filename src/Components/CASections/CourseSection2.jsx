@@ -1,8 +1,8 @@
-import { Button, Card, CardActions, CardContent, TextField, Typography, useMediaQuery, Box, Dialog, Stack } from '@mui/material';
+import { Button, Card, CardActions, CardContent, TextField, Typography, useMediaQuery, Box, Dialog, Stack, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
@@ -121,8 +121,10 @@ const CourseSection2 = () => {
 
     return (
         <div style={{ paddingLeft: isMobile ? '3rem' : '1rem', paddingRight: isMobile ? '3rem' : '1rem', paddingTop: isMobile ? '1rem' : '1', paddingBottom: isMobile ? '1rem' : '2rem', background: '#b7b2b221' }}>
-            <Grid container>
-                <Grid item size={{ xs: 12, sm: 8, md: 8, lg: 8 }}>
+            <Grid container 
+            sx={{minHeight: "500px"}}
+            >
+                <Grid item xs={12} sm={8} md={8} lg={8}>
                     <Swiper
                         slidesPerView={isIpad ? 2 : 1}
                         spaceBetween={isIpad ? 10 : 20}
@@ -166,8 +168,8 @@ const CourseSection2 = () => {
                             ))}
                     </Swiper>
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 4 }} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                    <iframe style={{ width: '100%', height: '100%', border: 'none' }} src='https://forms.classiolabs.com/?instituteid=152' />
+                <Grid item xs={12} sm={4} md={4} lg={4} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                    <iframe style={{ width: '100%', height: '100%', border: 'none' }} src={`https://forms.classiolabs.com/?instituteid=${instId}`} />
                 </Grid>
             </Grid>
             <Dialog

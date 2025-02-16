@@ -14,7 +14,7 @@ const HomeSection2 = () => {
                     <Box
                         sx={{
                             // width: '100%',
-                            p: isMobile ? 2 : 1,
+                            p: isMobile ? 4 : 1,
                             boxShadow: '#3e7add82 2px 6px 18px 0px',
                             borderRadius: '15px'
                         }}

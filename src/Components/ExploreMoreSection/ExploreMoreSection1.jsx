@@ -116,6 +116,7 @@ const ExploreMoreSection1 = () => {
                         <FormControl fullWidth>
                             <InputLabel>Subdomain</InputLabel>
                             <Select
+                            label="Subdomain"
                                 value={selectedDomain || ""}
                                 onChange={handleChangeDomain}
                                 sx={{
