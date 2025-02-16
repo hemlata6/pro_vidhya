@@ -1,6 +1,6 @@
-import { Box, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 
 const AboutSection1 = () => {
 
@@ -9,7 +9,7 @@ const AboutSection1 = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
             <Grid container spacing={2}>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Stack direction={'column'} spacing={2}>
                         <Typography
                             fontSize={'25px'}

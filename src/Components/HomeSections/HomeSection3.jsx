@@ -1,6 +1,6 @@
-import { Box, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import CounterUp from '../CommanSections/CounterUp';
 
 const HomeSection3 = () => {
@@ -10,7 +10,7 @@ const HomeSection3 = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '3rem' : '1rem' }}>
             <Grid container>
-                <Grid item size={{ xs: 12, sm: 8, md: 8, lg: 8 }}>
+                <Grid item xs={12} sm={8} md={8} lg={8}>
                     <Stack direction={'column'} spacing={2} alignItems={isMobile ? 'start' : 'center'}>
                         <Typography
                             sx={{
@@ -48,7 +48,7 @@ const HomeSection3 = () => {
                         </Typography>
                     </Stack>
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 4, md: 4, lg: 4 }} py={2}>
+                <Grid item xs={12} sm={4} md={4} lg={4} py={2}>
                     <Box
                         sx={{
                             background: '#C4C4C4',

@@ -1,6 +1,5 @@
 import { Box, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react'
-import Grid from '@mui/material/Grid2';
 
 const CALandingSection = () => {
 

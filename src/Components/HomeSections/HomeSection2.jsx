@@ -1,6 +1,6 @@
-import { Box, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import CounterUp from '../CommanSections/CounterUp';
 
 const HomeSection2 = () => {
@@ -10,7 +10,7 @@ const HomeSection2 = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
             <Grid container>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Box
                         sx={{
                             // width: '100%',

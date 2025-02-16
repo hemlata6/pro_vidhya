@@ -1,6 +1,6 @@
-import { Box, Button, Card, Divider, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Card, Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
 import { useLocation } from 'react-router-dom';
@@ -112,7 +112,7 @@ const ExploreMoreSection1 = () => {
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
             <Box sx={{ padding: '2rem' }}>
                 <Grid container spacing={2}>
-                    <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
                         <FormControl fullWidth>
                             <InputLabel>Subdomain</InputLabel>
                             <Select

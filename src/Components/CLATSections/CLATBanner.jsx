@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Grid, useMediaQuery } from '@mui/material';
 import Endpoints from '../../constant/endpoints';
 import Network from '../../Netwrok';
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import instId from '../../constant/InstituteId';
 
 const CLATBannerSection = () => {

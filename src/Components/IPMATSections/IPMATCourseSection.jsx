@@ -1,6 +1,6 @@
-import { Box, Button, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -136,7 +136,7 @@ const IPMATCourseSection = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
             <Grid container spacing={2}>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Box sx={{ width: '100%' }}>
                         <Stack
                             direction={'row'}

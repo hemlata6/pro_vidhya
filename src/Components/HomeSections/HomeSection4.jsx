@@ -1,6 +1,6 @@
-import { Box, Paper, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Box, Grid, Paper, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import React from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import Group1000001779 from '../../Images/Group1000001779.svg';
 import PhoneIcon from '../../Images/PhoneIcon.svg';
 import TabletIcon from '../../Images/TabletIcon.svg';
@@ -14,16 +14,16 @@ const HomeSection4 = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '0.5rem', paddingBottom: isMobile ? '2rem' : '0.5rem' }}>
             <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm: 5, md: 5, lg: 5 }}
+                <Grid xs={12} sm={5} md={5} lg={5}
                     display={'flex'}
                     justifyContent={['center', 'start']}
                     alignItems={'center'}
                 >
                     <img style={{ position: 'relative', top: isMobile ? '84px' : '0px', width: isMobile ? '90%' : '80%' }} alt='' src={Group1000001779} />
                 </Grid>
-                <Grid size={{ xs: 12, sm: 7, md: 7, lg: 7 }}>
+                <Grid xs={12} sm={7} md={7} lg={7}>
                     <Grid container spacing={2} >
-                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                        <Grid xs={12} sm={12} md={12} lg={12}>
                             <Stack direction={'column'} spacing={2}>
                                 <Typography
                                     textAlign={['center', 'start']}
@@ -44,7 +44,7 @@ const HomeSection4 = () => {
                                 </Typography>
                             </Stack>
                         </Grid>
-                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                        <Grid xs={12} sm={12} md={12} lg={12}>
                             <Stack direction={'row'} spacing={2} display={isMobile ? 'flex' : 'none'} justifyContent={'start'} alignItems={'center'} gap={['1rem', '6rem']}>
                                 <Paper
                                     sx={{
@@ -121,7 +121,7 @@ const HomeSection4 = () => {
                                 </Tooltip>
                             </Stack>
                         </Grid>
-                        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} width={'100%'}>
+                        <Grid xs={12} sm={12} md={12} lg={12} width={'100%'}>
                             <Stack direction={'row'} spacing={2} display={isMobile ? 'flex' : 'grid'} justifyContent={isMobile ? 'start' : 'center'} alignItems={'center'} gap={['1rem', '3.5rem']}>
                                 <img
                                     alt=''

@@ -1,6 +1,6 @@
-import { Box, Button, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import employee from '../../Images/employee.svg'
 import PropTypes from 'prop-types';
 import Network from '../../Netwrok';
@@ -123,7 +123,7 @@ const IPMATEmployeeSection = () => {
             <Grid container spacing={2} sx={{
                 width: '98%',
             }}>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Grid itemxs={12} sm={12} md={12} lg={12}>
                     <Slider {...settings}>
                         {
                             employees.length > 0 && employees.map((item, index) => {

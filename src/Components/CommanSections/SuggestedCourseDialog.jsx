@@ -1,6 +1,6 @@
-import { Badge, Box, Button, Card, CardContent, CardMedia, Checkbox, Divider, FormControl, IconButton, InputLabel, ListItemText, MenuItem, Paper, Select, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Badge, Box, Button, Card, CardContent, CardMedia, Checkbox, Divider, FormControl, Grid, IconButton, InputLabel, ListItemText, MenuItem, Paper, Select, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import Network from '../../Netwrok';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -28,7 +28,7 @@ const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) =
     const [publicCourses, setPublicCourses] = useState([]);
     const [suggestedLength, setSuggestedLength] = useState([]);
     const [tagName, setTagName] = useState('');
-    const [courseIdData, setCourseIdData] = useState({});
+    const [courseIdData, setCourseIdData] = useState({});    
 
     useEffect(() => {
         // ✅ Filter only active courses
@@ -245,7 +245,7 @@ const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) =
     const getUniqueLearningModes = () => {
         const modeSet = new Set();
 
-        coursePricing.forEach(course => {
+        coursePricing?.forEach(course => {
             let modes = [];
             if (course.liveAccess) modes.push("Live Access");
             if (course.onlineContentAccess) modes.push("Recorded");
@@ -276,7 +276,7 @@ const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) =
 
 
     const filterCoursesByLearningMode = () => {
-        return coursePricing.filter(course => {
+        return coursePricing?.filter(course => {
             // Extract selected values as an array
             const selectedModes = selectedLearningMode.split(" + ");
 
@@ -394,9 +394,6 @@ const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) =
     const taxLabAmount = (finalPrice * taxLab) / 100;
     const finalAmount = finalPrice + taxLabAmount;
 
-    console.log('finalAmount', discount, taxLab, price, discountedAmount, finalPrice, taxLabAmount, finalAmount)
-    console.log('filteredCourses', filteredCourses)
-
     return (
         <form
             style={{
@@ -404,7 +401,7 @@ const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) =
             }}
         >
             <Grid container spacing={2}>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Stack direction={'row'} spacing={2} width={isMobile ? '95%' : '92%'} position={'absolute'} display={'flex'} justifyContent={'flex-end'} alignItems={'center'}>
                         <CancelIcon
                             onClick={handleClose}
@@ -437,6 +434,7 @@ const SuggestedCourseDialog = ({ courseId, handleClose, onFinalAmountUpdate }) =
                                 <FormControl fullWidth>
                                     <InputLabel id="demo-simple-select-label">Lecture Mode</InputLabel>
                                     <Select
+                                    label="Lecture Mode"
                                         // multiple
                                         fullWidth
                                         variant="outlined"

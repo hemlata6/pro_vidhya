@@ -1,6 +1,6 @@
-import { Box, Button, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
@@ -87,7 +87,7 @@ const HomeSection5 = () => {
                         </Typography>
                     </Stack>
                 </Grid> */}
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Grid xs={12} sm={12} md={12} lg={12}>
                     <Slider {...settings}>
                         {
                             gallerData.map((item, i) => (
@@ -120,7 +120,7 @@ const HomeSection5 = () => {
                         }
                     </Slider>
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }} display={'flex'} justifyContent={'center'}>
+                <Grid item xs={12} sm={12} md={12} lg={12} display={'flex'} justifyContent={'center'}>
                     <Button
                         sx={{
                             color: '#fff',

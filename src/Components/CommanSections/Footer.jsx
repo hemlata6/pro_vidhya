@@ -1,6 +1,6 @@
-import { Box, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import React from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import logo from '../../Images/PROVIDHYA_LOGO-01.jpg';
 import telegram from '../../Images/telegram.svg';
 import facebook from '../../Images/facebook.svg';
@@ -14,7 +14,7 @@ const Footer = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '0rem' : '0rem', paddingRight: isMobile ? '0rem' : '0rem', paddingTop: '0rem', paddingBottom: '0rem' }}>
             <Grid container>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ background: '#19499D', py: [2, 4] }}>
+                <Grid item xs={12} sm={12} md={12} lg={12} sx={{ background: '#19499D', py: [2, 4] }}>
                     <Box sx={{ flexGrow: 1, pl: '6rem', pr: '6rem' }}>
                         <Grid container spacing={2}>
                             <Grid item size={{ xs: 12, sm: 2.5, md: 2.5, lg: 2.5 }}>
@@ -239,7 +239,7 @@ const Footer = () => {
                         </Grid>
                     </Box>
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }} sx={{ background: '#002B77', p: isMobile ? '1.5rem' : '0.5rem' }}>
+                <Grid item xs={12} sm={12} md={12} lg={12} sx={{ background: '#002B77', p: isMobile ? '1.5rem' : '0.5rem' }}>
                     <Typography
                         textAlign={'center'}
                         fontSize={isMobile ? '1rem' : '0.8rem'}

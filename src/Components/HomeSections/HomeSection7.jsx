@@ -1,6 +1,6 @@
-import { Box, Card, Divider, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react'
-import Grid from '@mui/material/Grid2';
+// import Grid from '@mui/material/Grid2';
 import image1 from '../../Images/CA.jpg'
 import image2 from '../../Images/CS.jpg'
 import image3 from '../../Images/CLAT.jpg'
@@ -78,7 +78,7 @@ const HomeSection7 = () => {
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
             <Grid container>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }} py={2}>
+                <Grid item xs={12} sm={12} md={12} lg={12} py={2}>
                     <Typography
                         fontSize={'25px'}
                         textAlign={'center'}
@@ -87,7 +87,7 @@ const HomeSection7 = () => {
                         Explore Courses by Categories
                     </Typography>
                 </Grid>
-                <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
+                <Grid item xs={12} sm={12} md={12} lg={12}
                     display={{ xs: 'block', sm: 'flex', md: 'flex', lg: 'flex' }}
                     justifyContent={'center'}
                     alignItems={'center'}
