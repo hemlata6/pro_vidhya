@@ -8,7 +8,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
-import instId from '../../constant/InstituteId';
+import instId, { auth } from '../../constant/InstituteId';
 import { Circle } from "styled-spinkit";
 
 const TabPanel = ({ children, value, index, ...other }) => {
@@ -45,7 +45,7 @@ const CourseSection3 = () => {
   //     setValue(newValue);
   // };
 
-  const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
+  // const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
   const [domainData, setDomainData] = useState([]);
   const [employee, setEmployee] = useState([]);
 
@@ -125,13 +125,13 @@ const CourseSection3 = () => {
   };
 
 
-  console.log('filteredCourses', filteredCourses);
-  console.log('domainData==', domainData);
+  // console.log('filteredCourses', filteredCourses);
+  // console.log('domainData==', domainData);
 
 
   return (
-    <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
-      <Grid container spacing={2}>
+    <div style={{ paddingLeft: isMobile ? '6rem' : '', paddingRight: isMobile ? '6rem' : '', paddingTop: isMobile ? '2rem' : '', paddingBottom: isMobile ? '2rem' : '' }} >
+      <Grid sx={{justifyContent:"center"}}>
         <Grid item size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
           <Box sx={{ width: '100%' }}>
             <Stack
@@ -168,11 +168,13 @@ const CourseSection3 = () => {
             </Stack>
             {domainData.map((item, index) => (
               <TabPanel key={index} value={value} index={index}>
-                <Typography variant="h6" fontWeight="bold" pb={2}>
+           
+                <Typography variant="h6" fontWeight="bold" pb={2} textAlign={'cetner'} >
                   Trending Courses
                 </Typography>
+               
                 {filteredCourses.length > 0 ? (
-                  <Grid container spacing={2} justifyContent="left">
+                  <Grid container spacing={2} justifyContent="center">
                     {filteredCourses.map((course, index) => {
                       const removeHtmlTags = (html) => {
                         if (!html) return "";
@@ -180,12 +182,12 @@ const CourseSection3 = () => {
                         return doc.body.textContent || "";
                       };
                       return (
-                        <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ height: "400px" }}>
+                        <Grid item key={index} xs={12} sm={6} md={4} lg={2} sx={{ height: "400px" }}>
                           <Card
                             sx={{
                               position: "relative",
                               // width: '100%',
-                              // maxWidth: isMobile ? '280px' : '340px',
+                              // maxWidth: isMobile ? '280px' : '400px',
                               border: '1px solid #000',
                               borderRadius: '15px',
                               boxShadow: '2px 6px 8px',
@@ -205,7 +207,7 @@ const CourseSection3 = () => {
                                   style={{
                                     width: '100%',
                                     borderRadius: '10px',
-                                    height: "170px"
+                                    height: "150px"
                                   }}
                                 />
                               </Stack>
@@ -247,8 +249,8 @@ const CourseSection3 = () => {
                                   })()
                                 }
                               </Typography>
-                              <Stack direction="row" spacing={1} p={1} justifyContent={['center', 'start']} width={'100%'} sx={{ position: "absolute", bottom: 0 }}>
-                                <a href={`/course?courseId=${encodeURIComponent(course?.id)}`} style={{ width: '94%' }}>
+                              <Stack direction="row" spacing={1} p={!isMobile ? "" :1} justifyContent={['center', 'start']} width={'100%'} sx={{ position: "absolute", bottom: 0 }}>
+                                <a href={`/course?courseId=${encodeURIComponent(course?.id)}`} style={{ width: !isMobile ? "100%" : '94%' }}>
                                   <Button
                                     sx={{
                                       textTransform: 'none',

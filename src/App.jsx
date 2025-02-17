@@ -13,6 +13,8 @@ import ExploreMorePage from './Pages/ExploreMorePage';
 import AboutSectionPage from './Pages/AboutSectionPage';
 import CoursePage from './Pages/CoursePage';
 import instId from './constant/InstituteId';
+import PrivacyAndPolicy from './Components/CommanSections/PrivacyAndPolicy';
+import TermsAndConditions from './Components/CommanSections/TermsAndConditions';
 
 function App() {
 
@@ -46,6 +48,8 @@ function App() {
         <Route path='/courseDetails' element={<ExploreMorePage />} />
         <Route path='/about' element={<AboutSectionPage />} />
         <Route path='/course' element={<CoursePage />} />
+        <Route path='/Privacy-policy' element={<PrivacyAndPolicy />} />
+        <Route path='/terms-conditions' element={<TermsAndConditions />} />
         <Route path='*' element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

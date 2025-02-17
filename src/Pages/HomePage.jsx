@@ -47,7 +47,7 @@ const HomePage = () => {
                 <HomeSection1 />
                 <HomeSection2 />
                 {/* <HomeSection3 /> */}
-                <HomeSection7 />
+                <HomeSection7 ref={downloadAppRef} />
                 <HomeSection6 />
                 <div ref={downloadAppRef}>
                     <HomeSection4 />

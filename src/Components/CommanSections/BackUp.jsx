@@ -24,7 +24,7 @@ import Network from '../../Netwrok';
 import Vector from '../../Images/Vector.svg'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import instId from '../../constant/InstituteId';
+import instId, { auth } from '../../constant/InstituteId';
 
 const NavBarTwo = () => {
 
@@ -72,7 +72,7 @@ const NavBarTwo = () => {
         setAnncouncementData(response?.announcement);
     };
 
-    const auth = 'eyJ1c2VySWQiOjk4LCJ0aW1lc3RhbXAiOjE3Mzc0NDA1NzA0MzQsImV4cGlyeSI6MTc2NzQ0MDU3MDQzNH0=';
+    // const auth = 'eyJ1c2VySWQiOjk4LCJ0aW1lc3RhbXAiOjE3Mzc0NDA1NzA0MzQsImV4cGlyeSI6MTc2NzQ0MDU3MDQzNH0=';
     const [domainData, setDomainData] = useState([]);
 
     const getDomainList = async () => {

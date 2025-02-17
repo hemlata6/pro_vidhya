@@ -1,19 +1,17 @@
 import { Button, IconButton, MenuItem, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DomainMenu = ({ domainData, courses }) => {
 
+  const navigate = useNavigate();
   const [selectedDomain, setSelectedDomain] = useState(null);
 
   const handleDomainClick = (domain) => {
     setSelectedDomain(domain);
   };
 
-  console.log('courses', courses);
-  
-
   const getCoursesForDomain = (domainId) => {
-    // Collect course titles for the main domain and its children
     const matchedCourses = courses.filter((course) =>
       course.domain.some((d) => d.id === domainId)
     );
@@ -24,11 +22,12 @@ const DomainMenu = ({ domainData, courses }) => {
   //   console.log('courses', course);
   // };
 
+
   const handleOpenCourse = (item) => {
-    // navigate(`/courseDetails/${item?.id}`);
+    navigate(`/course?courseId=${encodeURIComponent(item?.id)}`);
     // navigate(`https://course.classiolabs.com/course/${item?.id}`);
-    const url = `https://course.classiolabs.com/course/${item?.id}`
-    window.open(url, '_blank', 'noreferrer');
+    // const url = `https://course.classiolabs.com/course/${item?.id}`
+    // window.open(url, '_blank', 'noreferrer');
     // handleClose();
     // handleCloseOnlineCourse();
   };

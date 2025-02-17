@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, Divider, FormControl, IconButton, InputLabel, keyframes, ListItemText, MenuItem, Paper, Select, Stack, Typography, useMediaQuery, useTheme, Grid, Backdrop } from '@mui/material';
+import { Badge, Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, Divider, FormControl, IconButton, InputLabel, keyframes, ListItemText, MenuItem, Paper, Select, Stack, Typography, useMediaQuery, useTheme, Grid, Backdrop, FormControlLabel } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 // import Grid from '@mui/material/Grid2';
 import Network from '../../Netwrok';
@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import employeesss from '../../Images/employee.svg'
 import instId from '../../constant/InstituteId';
 import { Circle } from 'styled-spinkit';
+import ProceedToCheckoutForm from './ProceedToCheckoutForm';
 
 const zoomInOut = keyframes`
   0% { transform: scale(1); }
@@ -50,16 +51,19 @@ const CoursesDetail = ({ courseId }) => {
     const [validityTypeList, settValidityTypeList] = useState([]);
     const [validityDateList, setValidityDateList] = useState([]);
     const [watchTimeList, setWatchTimeList] = useState([]);
+    const [cartCourses, setCartCourses] = useState([]);
+    const [finalAmounts, setFinalAmounts] = useState(0);
+    const [proceedToCheckoutModal, setProceedToCheckoutModal] = useState(false);
+
 
     // console.log('selectedAccess', selectedAccess);
-    // console.log('finalCoursePricing', finalCoursePricing);
-
-
+    console.log('finalCoursePricing====', finalCoursePricing, cartCourses, finalAmounts);
+    console.log('course', course);
+    
 
     const discount = finalCoursePricing[0]?.discount ?? 0;
     const taxLab = course?.taxLab ?? 0;
     const price = finalCoursePricing[0]?.price ?? 0;
-
     const discountedAmount = (price * discount) / 100;
     const finalPrice = price - discountedAmount;
     const taxLabAmount = (finalPrice * taxLab) / 100;
@@ -173,6 +177,7 @@ const CoursesDetail = ({ courseId }) => {
 
         const matchedTag = findTagById(tagNames, coursePublic?.setting?.checkoutTag);
         setTagName(matchedTag);
+
         setSuggestedLength(finalCoursePricing);
 
         if (activeCourses.length > 0) {
@@ -212,6 +217,7 @@ const CoursesDetail = ({ courseId }) => {
     };
 
     const handleOpenSuggestedCourseDialog = (id) => {
+
         setSuggestedCourseDialog(true);
         setSuggestedCourseId(id)
     };
@@ -279,7 +285,7 @@ const CoursesDetail = ({ courseId }) => {
     const getUniqueLearningModes = () => {
         const modeSet = new Set();
 
-        coursePricing.forEach(course => {
+        coursePricing?.forEach(course => {
             let modes = [];
             if (course.liveAccess) modes.push("Live Access");
             if (course.onlineContentAccess) modes.push("Recorded");
@@ -299,7 +305,7 @@ const CoursesDetail = ({ courseId }) => {
         // console.log('filteredfiltered', filtered);
         if (selectedAccess) {
 
-            filtered = coursePricing.filter(course => {
+            filtered = coursePricing?.filter(course => {
                 // Extract selected values as an array
                 const selectedModes = selectedAccess.split(" + ");
 
@@ -321,7 +327,7 @@ const CoursesDetail = ({ courseId }) => {
         setVariationsList(variationsList)
 
         if (selectedVariant) {
-            filtered = filtered.filter((course) =>
+            filtered = filtered?.filter((course) =>
                 selectedVariant === "None"
                     ? !course.variation || course.variation.trim() === ""
                     : course.variation === selectedVariant
@@ -334,7 +340,7 @@ const CoursesDetail = ({ courseId }) => {
 
 
         if (selectedValidityType) {
-            filtered = filtered.filter(course => course.validityType === selectedValidityType);
+            filtered = filtered?.filter(course => course.validityType === selectedValidityType);
             // console.log('3333333333', filtered);
         }
 
@@ -350,7 +356,7 @@ const CoursesDetail = ({ courseId }) => {
         setValidityDateList(validityDates);
 
         if (selectedDuration) {
-            filtered = filtered.filter(course =>
+            filtered = filtered?.filter(course =>
                 selectedValidityType === "validity"
                     ? formatMilliseconds(course.duration) === selectedDuration
                     : formatTimestamp(course.expiry) === selectedDuration
@@ -358,14 +364,14 @@ const CoursesDetail = ({ courseId }) => {
             // console.log('4444444444', filtered);
         }
 
-        const watchTimeList = filtered.map(course =>
+        const watchTimeList = filtered?.map(course =>
             course.watchTime ? course.watchTime : "Unlimited"
         );
         setWatchTimeList([...new Set(watchTimeList)]);
 
         if (selectedWatchTime !== null && selectedWatchTime !== undefined) {
 
-            filtered = filtered.filter(course =>
+            filtered = filtered?.filter(course =>
                 selectedWatchTime === "Unlimited"
                     ? course.watchTime === null || course.watchTime === undefined || course.watchTime === ""
                     : Number(course.watchTime) === Number(selectedWatchTime)
@@ -379,13 +385,13 @@ const CoursesDetail = ({ courseId }) => {
     const newgetVariationList = (filtered) => {
         const variationsSet = new Set();
 
-        filtered.forEach((course) => {
+        filtered?.forEach((course) => {
             if (course.variation && course.variation.trim() !== "") {
                 variationsSet.add(course.variation);
             }
         });
 
-        if (filtered.some((course) => !course.variation || course.variation === null || course.variation.trim() === "")) {
+        if (filtered?.some((course) => !course.variation || course.variation === null || course.variation.trim() === "")) {
             variationsSet.add("None");
         }
 
@@ -413,7 +419,49 @@ const CoursesDetail = ({ courseId }) => {
     const handleSelectValidityType = (event) => setSelectedValidityType(event.target.value);
     const handleSelectDuration = (event) => setSelectedDuration(event.target.value);
     const handleSelectWatchTime = (event) => setSelectedWatchTime(event.target.value !== "Unlimited" ? Number(event.target.value) : event.target.value);
+    // console.log('suggestedLength', suggestedLength);
 
+    const handleAddToCart = (course) => {
+        setCartCourses((prevCart) => {
+            const isAlreadyAdded = prevCart.some((item) => item.id === course.id);
+
+            if (isAlreadyAdded) {
+                // If the course is already in the cart, remove it
+                const updatedCart = prevCart.filter((item) => item.id !== course.id);
+                setFinalAmounts(updatedCart.reduce((sum, item) => {
+                    const discount = item.discount ?? 0;
+                    const taxLab = item.taxLab ?? 0;
+                    const price = item.price ?? 0;
+                    const discountedAmount = (price * discount) / 100;
+                    const finalPrice = price - discountedAmount;
+                    const taxLabAmount = (finalPrice * taxLab) / 100;
+                    return sum + (finalPrice + taxLabAmount);
+                }, 0));
+
+                return updatedCart;
+            } else {
+                // If the course is not in the cart, add it
+                const updatedCart = [...prevCart, course];
+
+                // Calculate total price considering discounts and tax
+                const updatedTotal = updatedCart.reduce((sum, item) => {
+                    const discount = item.discount ?? 0;
+                    const taxLab = item.taxLab ?? 0;
+                    const price = item.price ?? 0;
+                    const discountedAmount = (price * discount) / 100;
+                    const finalPrice = price - discountedAmount;
+                    const taxLabAmount = (finalPrice * taxLab) / 100;
+                    return sum + (finalPrice + taxLabAmount);
+                }, 0);
+
+                setFinalAmounts(updatedTotal);
+                return updatedCart;
+            }
+        });
+    };
+    const handleProceedToCheckout = () => {
+        setProceedToCheckoutModal(true)
+    }
 
     return (
         <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '3rem' : '1rem' }}>
@@ -421,9 +469,6 @@ const CoursesDetail = ({ courseId }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                     <Stack direction={'column'} spacing={1} sx={{ marginRight: "25px" }}>
                         <Carousel showThumbs={false} className="carousel-box">
-                            <div>
-                                <img src={Endpoints?.mediaBaseUrl + "/" + course?.logo} style={{ borderRadius: "8px", width: '95%' }} />
-                            </div>
                             <div style={{ height: "100%" }}>
                                 <video
                                     style={{ width: "95%", height: "100%", borderRadius: '10px', maxHeight: '40vh' }}
@@ -433,6 +478,10 @@ const CoursesDetail = ({ courseId }) => {
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
+                            <div>
+                                <img src={Endpoints?.mediaBaseUrl + "/" + course?.logo} style={{ borderRadius: "8px", width: '95%' }} />
+                            </div>
+
                         </Carousel>
                         <Typography
                             textAlign={'center'}
@@ -463,24 +512,25 @@ const CoursesDetail = ({ courseId }) => {
                             {/* 3500/-<s>5000/-</s>30% off */}
                         </Typography>
                         <Button
+                            onClick={() => handleAddToCart(finalCoursePricing[0])}
                             sx={{
                                 textTransform: "none",
-                                background: '#9306FF',
+                                background: cartCourses.some(course => course.id === finalCoursePricing[0]?.id) ? 'rgb(221, 42, 61)' : '#9306FF',
                                 color: '#fff',
                                 py: 1,
                                 ":hover": {
-                                    background: '#9306FF'
+                                    background: cartCourses.some(course => course.id === finalCoursePricing[0]?.id) ? 'rgb(221, 42, 61)' : '#9306FF'
                                 }
                             }}
                         >
-                            Add to Cart
+                            {cartCourses.some(course => course.id === finalCoursePricing[0]?.id) ? "Remove" : "Add to Cart"}
                         </Button>
                     </Stack>
                 </Grid>
                 <Grid item xs={12} sm={8} md={8} lg={8}>
                     <Box sx={{ flexGrow: 1, marginLeft: "25px" }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={12} md={12} lg={12}>
+                            <Grid item xs={12} sm={7} md={7} lg={7}>
                                 <Stack direction={'column'} spacing={2}>
                                     <Typography
                                         fontSize={'18px'}
@@ -497,7 +547,7 @@ const CoursesDetail = ({ courseId }) => {
                                         {course?.shortDescription === null ? 'Short Description' : course?.shortDescription}
                                     </Typography>
                                     <Grid container sx={{ mt: 2 }}>
-                                        <Grid item xs={6} sm={6} md={6} lg={6} sx={{ paddingRight: "10px" }}>
+                                        <Grid item xs={12} sm={12} md={12} lg={12} sx={{ paddingRight: "10px" }}>
                                             <div
                                                 style={{
                                                     width: '100%'
@@ -512,11 +562,11 @@ const CoursesDetail = ({ courseId }) => {
                                                         variant="outlined"
                                                         value={selectedAccess}
                                                         onChange={handleChangeAccess}
-                                                        // renderValue={(selected) => selected.join(", ")}
-                                                        sx={{
-                                                            width: '100%',
-                                                            maxWidth: '430px'
-                                                        }}
+                                                    // renderValue={(selected) => selected.join(", ")}
+                                                    // sx={{
+                                                    //     width: '100%',
+                                                    //     maxWidth: '430px'
+                                                    // }}
                                                     >
                                                         {getUniqueLearningModes()?.map((option) => (
                                                             <MenuItem key={option} value={option}>
@@ -597,9 +647,6 @@ const CoursesDetail = ({ courseId }) => {
                                                             )}
                                                     </>
                                             }
-
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} lg={6} sx={{ paddingLeft: "10px" }}>
                                             {
                                                 selectedValidityType &&
                                                 selectedValidityType !== "lifetime" &&
@@ -613,7 +660,7 @@ const CoursesDetail = ({ courseId }) => {
                                                             <InputLabel id="demo-simple-select-label">{selectedValidityType ? selectedValidityType : "Validity"} Date</InputLabel>
                                                             <p style={{ margin: 0 }}></p>
                                                             <Select
-                                                                label={selectedValidityType ? selectedValidityType : "Validity Date"}
+                                                                label={selectedValidityType ? `${selectedValidityType} Date` : "Validity Date"}
                                                                 // multiple
                                                                 fullWidth
                                                                 variant="outlined"
@@ -651,11 +698,11 @@ const CoursesDetail = ({ courseId }) => {
                                                                 variant="outlined"
                                                                 value={selectedWatchTime}
                                                                 onChange={handleSelectWatchTime}
-                                                                // renderValue={(selected) => selected.join(", ")} // Directly show selected values
-                                                                sx={{
-                                                                    width: '100%',
-                                                                    maxWidth: '430px'
-                                                                }}
+                                                            // renderValue={(selected) => selected.join(", ")} // Directly show selected values
+                                                            // sx={{
+                                                            //     width: '100%',
+                                                            //     maxWidth: '430px'
+                                                            // }}
                                                             >
                                                                 {watchTimeList?.map((watchTime) => {
                                                                     return <MenuItem key={watchTime} value={watchTime ? watchTime : "Unlimited"}>
@@ -668,12 +715,130 @@ const CoursesDetail = ({ courseId }) => {
                                                 )
                                             }
                                         </Grid>
+
                                     </Grid>
 
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={12} lg={12} width={'100%'}>
-                                {suggestedLength.length > 0 && (
+                            <Grid item xs={12} sm={5} md={5} lg={5} sx={{ paddingLeft: "10px" }}>
+                                {suggestedLength.length > 0 &&
+                                    (
+                                        <Typography
+                                            fontSize={'18px'}
+                                            fontWeight={'600'}
+                                            textAlign={isMobile ? 'start' : 'center'}
+                                            py={[0, 1]}
+                                        >
+                                            Suggested Courses
+                                        </Typography>
+                                    )
+                                }
+                                {
+                                    suggestedLength.length > 0 && (
+                                        <Box sx={{ padding: 1, height: suggestedLength?.length > 1 ? "300px" : "", overflowY: suggestedLength?.length > 1 ? "scroll" : "none" }}>
+                                            <Stack direction={'row'} spacing={2} width={'100%'}>
+                                                <Typography
+                                                    fontSize={'20px'}
+                                                    fontWeight={'600'}
+                                                    textAlign={isMobile ? 'start' : 'center'}
+                                                    width={'100%'}
+                                                    py={[3, 2]}
+                                                >
+                                                    {tagName?.tag}
+                                                </Typography>
+                                            </Stack>
+                                            {
+                                                suggestedLength.map((course, i) => {
+                                                    const removeHtmlTags = (html) => {
+                                                        if (!html) return "";
+                                                        const doc = new DOMParser().parseFromString(html, "text/html");
+                                                        return doc.body.textContent || "";
+                                                    };
+                                                    return (
+                                                        <Grid item key={i} xs={12} sm={12} md={12} lg={12}>
+                                                            <Card
+                                                                key={i}
+                                                                sx={{
+                                                                    mb: 2,
+                                                                    width: '100%',
+                                                                    maxWidth: isMobile ? '240px' : '340px',
+                                                                    border: '1px solid #000',
+                                                                    borderRadius: '15px',
+                                                                    boxShadow: '2px 6px 8px',
+                                                                    transition: 'transform 0.5s ease-out, box-shadow 0.5s ease-out',
+                                                                    ':hover': {
+                                                                        boxShadow: '6px 5px 8px',
+                                                                        transform: 'scale(1.05)',
+                                                                    },
+                                                                    height: '100%'
+                                                                }}
+                                                            >
+                                                                <Stack spacing={1} direction="column">
+                                                                    {/* 🔹 Course Image */}
+                                                                    <Stack spacing={2} p={1}>
+                                                                        <img
+                                                                            alt={course?.title}
+                                                                            src={Endpoints?.mediaBaseUrl + course?.logo}
+                                                                            style={{
+                                                                                width: '100%',
+                                                                                borderRadius: '10px'
+                                                                            }}
+                                                                        />
+                                                                    </Stack>
+
+                                                                    {/* 🔹 Course Title */}
+                                                                    <Typography
+                                                                        textAlign={['center', 'start']}
+                                                                        fontSize={'15px'}
+                                                                        fontWeight={'700'}
+                                                                        p={1}
+                                                                    >
+                                                                        {course?.title}
+                                                                    </Typography>
+
+                                                                    <Typography
+                                                                        p={1}
+                                                                        fontSize={'12px'}
+                                                                        sx={{
+                                                                            overflow: 'hidden',
+                                                                            textOverflow: 'ellipsis',
+                                                                            whiteSpace: 'nowrap',
+                                                                        }}
+                                                                    >
+                                                                        {removeHtmlTags(course?.description)}
+                                                                    </Typography>
+                                                                    <Typography p={1} fontSize={'12px'}>
+                                                                        Starting from
+                                                                        {
+                                                                            (() => {
+                                                                                const finalPrice = getLowestFinalPrice(course?.coursePricing);
+                                                                                if (!finalPrice) return "Price not available";
+
+                                                                                return ` ₹${finalPrice}`;
+                                                                            })()
+                                                                        }
+                                                                    </Typography>
+                                                                    <Stack direction="row" spacing={1} p={1} justifyContent={['center', 'start']} width={'100%'}>
+                                                                        <FormControlLabel control={<Checkbox
+                                                                            onChange={(event) => {
+                                                                                if (event.target.checked) {
+                                                                                    handleOpenSuggestedCourseDialog(course.id);
+                                                                                }
+                                                                            }}
+                                                                        />} label="Add to cart" />
+
+                                                                    </Stack>
+                                                                </Stack>
+                                                            </Card>
+                                                        </Grid>
+                                                    )
+                                                })
+                                            }
+
+                                        </Box>
+                                    )
+                                }
+                                {/* {suggestedLength.length > 0 && (
                                     <>
                                         <Stack direction={'row'} spacing={2} width={'100%'}>
                                             <Typography
@@ -689,6 +854,7 @@ const CoursesDetail = ({ courseId }) => {
                                         <Stack direction={isMobile ? 'row' : 'column'} spacing={2} width={'100%'}>
                                             {
                                                 suggestedLength.map((item, i) => {
+console.log('item=====', item);
 
                                                     return (
                                                         <Stack key={i} direction={isMobile ? 'row' : 'column'} spacing={2} display={'flex'}>
@@ -730,7 +896,7 @@ const CoursesDetail = ({ courseId }) => {
                                             }
                                         </Stack>
                                     </>
-                                )}
+                                )} */}
                             </Grid>
                         </Grid>
                     </Box>
@@ -873,6 +1039,7 @@ const CoursesDetail = ({ courseId }) => {
                                                 <Card
                                                     key={i}
                                                     sx={{
+                                                        mb: 2,
                                                         width: '100%',
                                                         maxWidth: isMobile ? '280px' : '340px',
                                                         border: '1px solid #000',
@@ -959,6 +1126,7 @@ const CoursesDetail = ({ courseId }) => {
                             </>
                         )
                     }
+
                 </Grid>
             </Grid>
             {/* <Box sx={{ display: 'flex', justifyContent: 'end' }}>
@@ -987,40 +1155,40 @@ const CoursesDetail = ({ courseId }) => {
                     top: '88%'
                 }}
             >
-                <Button
-                    sx={{
-                        position: 'relative',
-                        borderRadius: `4px`,
-                        fontWeight: '700',
-                        background: `rgb(221, 42, 61)`,
-                        color: `rgb(255, 255, 255)`,
-                        boxShadow: `rgba(0, 0, 0, 0.5) 4px 3px 14px 0px`,
-                        display: `flex`,
-                        justifyContent: 'center',
-                        gap: 1,
-                        alignItems: 'baseline',
-                        padding: `14px 11px`,
-                        fontSize: `12px`,
-                        animation: `${zoomInOut} 1.5s infinite ease-in-out`,
-                        transition: "transform 0.3s, box-shadow 0.3s",
-                        boxSizing: 'border-box',
-                        textDecoration: 'none',
-                        ":hover": {
-                            background: 'red!important'
-                        },
-                    }}
-                >
-                    Procced to checkout
-                    <span
-                        style={{
-                            color: 'yellow',
-                            fontSize: '10px',
-                            textTransform: 'none'
-                        }}
-                    >
-                        Total Price {(finalAmount).toFixed(2)}/-
-                    </span>
-                </Button>
+                {
+                    finalAmounts > 0 && (
+                        <Button
+                            onClick={handleProceedToCheckout}
+                            sx={{
+                                position: 'relative',
+                                borderRadius: `4px`,
+                                fontWeight: '700',
+                                background: `rgb(221, 42, 61)`,
+                                color: `rgb(255, 255, 255)`,
+                                boxShadow: `rgba(0, 0, 0, 0.5) 4px 3px 14px 0px`,
+                                display: `flex`,
+                                justifyContent: 'center',
+                                gap: 1,
+                                alignItems: 'baseline',
+                                padding: `14px 11px`,
+                                fontSize: `12px`,
+                                animation: `${zoomInOut} 1.5s infinite ease-in-out`,
+                                transition: "transform 0.3s, box-shadow 0.3s",
+                                boxSizing: 'border-box',
+                                textDecoration: 'none',
+                                ":hover": {
+                                    background: 'red!important'
+                                },
+                            }}
+                        >
+                            Procced to checkout
+                            <span style={{ color: 'yellow', fontSize: '10px', textTransform: 'none' }}>
+                                Total Price: ₹{finalAmounts.toFixed(2)}
+                            </span>
+                        </Button>
+                    )
+                }
+
             </Stack>
             <Dialog
                 open={suggestedCourseDialog}
@@ -1039,6 +1207,20 @@ const CoursesDetail = ({ courseId }) => {
                     handleClose={handleCloseSuggestedCourseDialog}
                     onFinalAmountUpdate={handleFinalAmountUpdate}
                 />
+            </Dialog>
+            <Dialog
+                open={proceedToCheckoutModal}
+                onClose={() => setProceedToCheckoutModal(false)}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "100%",
+                            maxWidth: "500px",
+                        },
+                    },
+                }}
+            >
+                <ProceedToCheckoutForm setProceedToCheckoutModal={setProceedToCheckoutModal} cartCourses={cartCourses} course={course} />
             </Dialog>
             {isLoading &&
                 <Backdrop

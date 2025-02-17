@@ -6,18 +6,28 @@ import telegram from '../../Images/telegram.svg';
 import facebook from '../../Images/facebook.svg';
 import insta from '../../Images/insta.svg';
 import youtube from '../../Images/youtube.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
 
     const isMobile = useMediaQuery("(min-width:600px)");
+    const navigate = useNavigate();
+
+    const handlePrivacyPolicy = () =>{
+        navigate("/Privacy-policy")
+    }
+
+    const handleTermsAndConditions = () =>{
+        navigate("/terms-conditions")
+    }
 
     return (
         <div style={{ paddingLeft: isMobile ? '0rem' : '0rem', paddingRight: isMobile ? '0rem' : '0rem', paddingTop: '0rem', paddingBottom: '0rem' }}>
             <Grid container>
                 <Grid item xs={12} sm={12} md={12} lg={12} sx={{ background: '#19499D', py: [2, 4] }}>
-                    <Box sx={{ flexGrow: 1, pl: '6rem', pr: '6rem' }}>
+                    <Box sx={{ flexGrow: 1, pl: !isMobile ?  "2rem" : '6rem', pr: !isMobile ?  "2rem" : '6rem' }}>
                         <Grid container spacing={2}>
-                            <Grid item size={{ xs: 12, sm: 2.5, md: 2.5, lg: 2.5 }}>
+                            <Grid item xs={12} sm={2.5} md={2.5} lg={2.5}>
                                 <img
                                     alt=''
                                     src={logo}
@@ -33,7 +43,7 @@ const Footer = () => {
                                     विद्या धनं सर्वधन प्रधानम्
                                 </Typography>
                             </Grid>
-                            <Grid item size={{ xs: 12, sm: 2, md: 2, lg: 2 }}>
+                            <Grid item xs={12} sm={2} md={2} lg={2}>
                                 <Stack direction={'column'}>
                                     <Typography
                                         fontSize={'16px'}
@@ -102,7 +112,7 @@ const Footer = () => {
                                     </Typography>
                                 </Stack>
                             </Grid>
-                            <Grid item size={{ xs: 12, sm: 2.5, md: 2.5, lg: 2.5 }}>
+                            <Grid item xs={12} sm={2.5} md={2.5} lg={2.5}>
                                 <Stack direction={'column'}>
                                     <Typography
                                         fontSize={'16px'}
@@ -115,6 +125,7 @@ const Footer = () => {
                                 </Stack>
                                 <Stack direction={'column'} spacing={1}>
                                     <Typography
+                                    onClick={handlePrivacyPolicy}
                                         fontSize={'16px'}
                                         color='#fff'
                                         fontWeight={500}
@@ -128,6 +139,7 @@ const Footer = () => {
                                         Privacy Policy
                                     </Typography>
                                     <Typography
+                                    onClick={handleTermsAndConditions}
                                         fontSize={'16px'}
                                         color='#fff'
                                         fontWeight={500}
@@ -155,7 +167,7 @@ const Footer = () => {
                                     </Typography>
                                 </Stack>
                             </Grid>
-                            <Grid item size={{ xs: 12, sm: 2, md: 2, lg: 2 }}>
+                            <Grid item xs={12} sm={2} md={2} lg={2}>
                                 <Stack direction={'column'}>
                                     <Typography
                                         fontSize={'16px'}
@@ -178,10 +190,10 @@ const Footer = () => {
                                     </Typography>
                                 </Stack>
                             </Grid>
-                            <Grid item size={{ xs: 12, sm: 3, md: 3, lg: 3 }}
+                            <Grid item xs={12} sm={3} md={3} lg={3}
                                 sx={{
                                     display: 'flex',
-                                    justifyContent: 'flex-end',
+                                    justifyContent: isMobile ?'flex-end' : "left",
                                     alignItems: 'center'
                                 }}
                             >

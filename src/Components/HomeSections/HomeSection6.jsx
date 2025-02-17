@@ -116,10 +116,11 @@ const HomeSection6 = () => {
                                     key={i}
                                 >
                                     <Grid
+                                    className='aaaaaaaaaa'
                                         item
                                         xs={12}
                                         sm={3}
-                                        lg={3}
+                                        lg={12}
                                         md={3}
                                         sx={{ px: 0, py: 2 }}
                                         display={'flex'}

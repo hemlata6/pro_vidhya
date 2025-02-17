@@ -5,6 +5,8 @@
 // 	static mediaBaseUrl = "https://media.theoogway.com/";
 // }
 
+export const BASE_URL = "https://prodapi.classiolabs.com/";
+
 const Endpoints = {
   // baseURL: "https://api.softkitesinfo.com/",
   baseURL: "https://prodapi.classiolabs.com/",

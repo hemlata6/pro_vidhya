@@ -8,7 +8,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
-import instId from '../../constant/InstituteId';
+import instId, { auth } from '../../constant/InstituteId';
 
 const TabPanel = ({ children, value, index, ...other }) => {
     return (
@@ -43,7 +43,7 @@ const CLATCourseSection = () => {
     //     setValue(newValue);
     // };
 
-    const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
+    // const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
     const [domainData, setDomainData] = useState([]);
     const [employee, setEmployee] = useState([]);
 

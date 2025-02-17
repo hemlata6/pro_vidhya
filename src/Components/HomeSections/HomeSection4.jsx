@@ -22,7 +22,7 @@ const HomeSection4 = () => {
                     <img style={{ position: 'relative', top: isMobile ? '84px' : '0px', width: isMobile ? '90%' : '80%' }} alt='' src={Group1000001779} />
                 </Grid>
                 <Grid xs={12} sm={7} md={7} lg={7}>
-                    <Grid container spacing={2} >
+                    <Grid container spacing={2} sx={{marginLeft: 0}}>
                         <Grid xs={12} sm={12} md={12} lg={12}>
                             <Stack direction={'column'} spacing={2}>
                                 <Typography
@@ -45,14 +45,16 @@ const HomeSection4 = () => {
                             </Stack>
                         </Grid>
                         <Grid xs={12} sm={12} md={12} lg={12}>
-                            <Stack direction={'row'} spacing={2} display={isMobile ? 'flex' : 'none'} justifyContent={'start'} alignItems={'center'} gap={['1rem', '6rem']}>
+                            <Stack direction={'row'} spacing={2} display={isMobile ? 'flex' : ''} justifyContent={'start'} alignItems={'center'} gap={['1rem', '6rem']} mt={2}>
+                            <Tooltip title="Coming Soon" placement="right">
                                 <Paper
                                     sx={{
                                         padding: '1rem'
                                     }}
                                 >
+                                   <Box display={isMobile ? '' : 'none'}>  
                                     <Box display={'flex'} justifyContent={'center'}>
-                                        <img style={{ width: '100%', maxWidth: '50px' }} alt='' src={PhoneIcon} />
+                                        <img style={{ width: '100%', height: "140px" }} alt='' src={PhoneIcon} />
                                     </Box>
                                     <Typography
                                         textAlign={'center'}
@@ -67,14 +69,26 @@ const HomeSection4 = () => {
                                         color='#6E7191'
                                     >
                                         IOS & Android
-                                    </Typography>
+                                    </Typography></Box>
+                                    <img
+                                    alt=''
+                                    src={playStore}
+                                    style={{
+                                        position: 'relative',
+                                        // right: isMobile ? '0.5rem' : '1rem',
+                                        width: '100%',
+                                        maxWidth: '170px'
+                                    }}
+                                />
                                 </Paper>
+                                </Tooltip>
                                 <Tooltip title="Coming Soon" placement="right">
                                     <Paper
                                         sx={{
                                             padding: '1rem'
                                         }}
                                     >
+                                        <Box display={isMobile ? '' : 'none'}>
                                         <Box display={'flex'} justifyContent={'center'} py={1}>
                                             <img style={{ width: '100%' }} alt='' src={TabletIcon} />
                                         </Box>
@@ -92,6 +106,17 @@ const HomeSection4 = () => {
                                         >
                                             Android & iPAD
                                         </Typography>
+                                        </Box>
+                                        <img
+                                     style={{
+                                        position: 'relative',
+                                        // right: isMobile ? '0.5rem' : '1rem',
+                                        width: '100%',
+                                        maxWidth: '170px'
+                                    }}
+                                    alt=''
+                                    src={appStore}
+                                />
                                     </Paper>
                                 </Tooltip>
                                 <Tooltip title="Coming Soon" placement="right">
@@ -100,6 +125,7 @@ const HomeSection4 = () => {
                                             padding: '1rem'
                                         }}
                                     >
+                                        <Box display={isMobile ? '' : 'none'}>
                                         <Box display={'flex'} justifyContent={'center'} py={1}>
                                             <img style={{ width: '100%' }} alt='' src={desktopIcon} />
                                         </Box>
@@ -117,11 +143,23 @@ const HomeSection4 = () => {
                                         >
                                             All Browsers
                                         </Typography>
+
+                                        </Box>
+                                       <img
+                                    style={{
+                                        position: 'relative',
+                                        // right: isMobile ? '0.5rem' : '1rem',
+                                        width: '100%',
+                                        maxWidth: '170px'
+                                    }}
+                                    alt=''
+                                    src={windowsStore}
+                                /> 
                                     </Paper>
                                 </Tooltip>
                             </Stack>
                         </Grid>
-                        <Grid xs={12} sm={12} md={12} lg={12} width={'100%'}>
+                        {/* <Grid xs={12} sm={12} md={12} lg={12} width={'100%'}>
                             <Stack direction={'row'} spacing={2} display={isMobile ? 'flex' : 'grid'} justifyContent={isMobile ? 'start' : 'center'} alignItems={'center'} gap={['1rem', '3.5rem']}>
                                 <img
                                     alt=''
@@ -152,7 +190,7 @@ const HomeSection4 = () => {
                                     src={windowsStore}
                                 />
                             </Stack>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Grid>
             </Grid>

@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import dayjs from 'dayjs';
-import instId from '../../constant/InstituteId';
+import instId, { auth } from '../../constant/InstituteId';
 
 const TabPanel = ({ children, value, index, ...other }) => {
     return (
@@ -83,7 +83,7 @@ const CAEmployeeSection = () => {
         ],
     };
 
-    const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
+    // const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
 
     const getEmployee = async () => {
         try {

@@ -11,7 +11,7 @@ import { FreeMode, Pagination } from 'swiper/modules';
 import Network from '../../Netwrok';
 import Endpoints from '../../constant/endpoints';
 import CloseIcon from '@mui/icons-material/Close';
-import instId from '../../constant/InstituteId';
+import instId, { auth } from '../../constant/InstituteId';
 
 const CSSection1 = () => {
 
@@ -27,7 +27,7 @@ const CSSection1 = () => {
     const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
     const [domainData, setDomainData] = useState([]);
 
-    const auth = 'eyJ1c2VySWQiOjc4MSwidGltZXN0YW1wIjoxNzM4MzExODg2OTIyLCJleHBpcnkiOjE3NjgzMTE4ODY5MjJ9';
+    // const auth = 'eyJ1c2VySWQiOjc4MSwidGltZXN0YW1wIjoxNzM4MzExODg2OTIyLCJleHBpcnkiOjE3NjgzMTE4ODY5MjJ9';
     const getDomainList = async () => {
         try {
             const response = await Network.fetchDomain(auth);

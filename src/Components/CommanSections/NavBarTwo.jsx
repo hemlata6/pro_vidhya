@@ -20,7 +20,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import DomainMenu from './CustomMenu';
 import { styled } from '@mui/material/styles';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import instId from '../../constant/InstituteId';
+import instId, { auth } from '../../constant/InstituteId';
 
 
 const NavBarTwo = ({ downloadAppRef }) => {
@@ -82,7 +82,7 @@ const NavBarTwo = ({ downloadAppRef }) => {
         setAnncouncementData(response?.announcement);
     };
 
-    const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
+    // const auth = 'eyJ1c2VySWQiOjEwMywidGltZXN0YW1wIjoxNzM5NDM0MTY3MzgwLCJleHBpcnkiOjE3Njk0MzQxNjczODB9';
     const [domainData, setDomainData] = useState([]);
     // console.log('domainData', domainData)
 
@@ -143,7 +143,13 @@ const NavBarTwo = ({ downloadAppRef }) => {
     }, []);
 
     const handleClickOnlineCourse = (event) => {
-        setAnchorElOnlineCourse(event.currentTarget);
+        if (downloadAppRef && downloadAppRef.current) {
+            downloadAppRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
+        // setAnchorElOnlineCourse(event.currentTarget);
     };
 
     const handleClickAboutUs = (event) => {
@@ -212,7 +218,7 @@ const NavBarTwo = ({ downloadAppRef }) => {
         navigate('/about');
     };
 
-    console.log('domainData', domainData, courses);
+    // console.log('domainData', domainData, courses);
     
 
     const DrawerList = (
@@ -538,7 +544,7 @@ const NavBarTwo = ({ downloadAppRef }) => {
                             Home
                             {/* <img alt='' style={{ transform: anchorAbout ? 'rotate(180deg)' : 'rotate(0deg)' }} src={PolygonDown} /> */}
                         </Typography>
-                        <Typography
+                        {/* <Typography
                             onClick={handleClickOnlineCourse}
                             color='#1356C5'
                             display={'flex'}
@@ -553,7 +559,7 @@ const NavBarTwo = ({ downloadAppRef }) => {
                         >
                             Courses
                             <img alt='' style={{ transform: anchorElOnlineCourse ? 'rotate(180deg)' : 'rotate(0deg)' }} src={Vector} />
-                        </Typography>
+                        </Typography> */}
                         <Typography
                             onClick={handleNavigateAboutUs}
                             color='#1356C5'
@@ -644,11 +650,11 @@ const NavBarTwo = ({ downloadAppRef }) => {
                         <PersonOutlineOutlinedIcon sx={{ fontSize: '18px' }} />
                         Download Our App
                     </Button>
-                    <Stack>
+                    {/* <Stack>
                         <Badge badgeContent={1} color="secondary">
                             <AddShoppingCartIcon sx={{ cursor: 'pointer' }} />
                         </Badge>
-                    </Stack>
+                    </Stack> */}
                 </Box>
             </Box>
             <Box

@@ -27,8 +27,8 @@ const HomeSection2 = () => {
                             >
                                 At ProVidhya, You will get
                             </Typography>
-                            <Grid container>
-                                <Grid item size={{ xs: 12, sm: 3, md: 3, lg: 3 }}
+                            <Grid container sx={{justifyContent: "space-around"}}>
+                                <Grid item  xs={12} sm={3} md={3} lg={3}
                                     sx={{
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -44,7 +44,7 @@ const HomeSection2 = () => {
                                     </Stack>
                                 </Grid>
                                 <Divider orientation="vertical" flexItem />
-                                <Grid item size={{ xs: 12, sm: 3, md: 3, lg: 3 }}
+                                <Grid item xs={12} sm={3} md={3} lg={3}
                                     sx={{
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -67,7 +67,7 @@ const HomeSection2 = () => {
                                     </Stack>
                                 </Grid>
                                 <Divider orientation="vertical" flexItem />
-                                <Grid item size={{ xs: 12, sm: 3, md: 3, lg: 3 }}
+                                <Grid item xs={12} sm={3} md={3} lg={3}
                                     sx={{
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -91,7 +91,7 @@ const HomeSection2 = () => {
                                     </Stack>
                                 </Grid>
                                 <Divider orientation="vertical" flexItem />
-                                <Grid item size={{ xs: 12, sm: 2.5, md: 2.5, lg: 2.5 }}
+                                <Grid item xs={12} sm={2.5} md={2.5} lg={2.5}
                                     sx={{
                                         display: 'flex',
                                         justifyContent: 'center',

@@ -1,5 +1,5 @@
 import { Box, Card, Divider, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 // import Grid from '@mui/material/Grid2';
 import image1 from '../../Images/CA.jpg'
 import image2 from '../../Images/CS.jpg'
@@ -75,8 +75,23 @@ const HomeSection7 = () => {
         setSelectedDomain(domain.id === selectedDomain?.id ? null : domain);
     };
 
+    // const isMobile = useMediaQuery("(min-width:600px)");
+
+    // Create a ref to scroll to the course images section
+    const coursesRef = useRef(null);
+
+    // You can use this ref for scrolling actions later
+    const scrollToCourses = () => {
+        if (coursesRef.current) {
+            coursesRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
+    };
+
     return (
-        <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }}>
+        <div style={{ paddingLeft: isMobile ? '6rem' : '1rem', paddingRight: isMobile ? '6rem' : '1rem', paddingTop: isMobile ? '2rem' : '1rem', paddingBottom: isMobile ? '2rem' : '1rem' }} ref={coursesRef}>
             <Grid container>
                 <Grid item xs={12} sm={12} md={12} lg={12} py={2}>
                     <Typography
@@ -93,6 +108,7 @@ const HomeSection7 = () => {
                     alignItems={'center'}
                     gap={2}
                     py={1}
+                    
                 >
                     <Stack direction={isMobile ? 'row' : 'column'} spacing={[2, 10]} justifyContent={'center'}>
                         <Stack direction={'row'} justifyContent={'center'}>
